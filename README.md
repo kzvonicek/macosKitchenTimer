@@ -231,11 +231,6 @@ text apart.
 | `KITCHENTIMER_DUMP_MENU=1` | prints the context menu with its checkmarks and exits. Written after a menu refactor silently dropped two items |
 | `KITCHENTIMER_TEST_SOUND=<count>` | tries the sound n times and measures how much of it actually played. `play()` returns true even when a sound is swallowed, so flaky playback needs this |
 
-## Still missing
-
-- launch at login (manual for now, or `SMAppService`)
-- a notification when time is up; currently just the sound and a blinking dial
-
 ## Credits
 
 Built by [Karel Zvoníček](https://github.com/kzvonicek) together with Claude
