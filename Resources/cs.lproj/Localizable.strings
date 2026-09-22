@@ -1,0 +1,34 @@
+/* Kontextové menu */
+"menu.minutes"          = "%d min";
+"menu.start"            = "Spustit";
+"menu.pause"            = "Pozastavit";
+"menu.size"             = "Velikost";
+"menu.size.small"       = "Malá";
+"menu.size.medium"      = "Střední";
+"menu.size.large"       = "Velká";
+"menu.size.huge"        = "Obří";
+"menu.color"            = "Barva";
+"menu.transparency"     = "Průsvitnost";
+"menu.sound"            = "Zvuk";
+"menu.sound.builtin"    = "Zvonek";
+"menu.sound.custom"     = "Vlastní soubor…";
+"menu.darkFace"         = "Tmavý ciferník";
+"menu.snap"             = "Přichytávat na minuty";
+"menu.hint"             = "tažení za rámeček = posun · ⌃⌥⌘M = skrýt";
+"menu.language"         = "Jazyk";
+"menu.language.system"  = "Podle systému";
+"menu.quit"             = "Ukončit minutku";
+
+/* Barvy */
+"color.red"             = "Červená";
+"color.teal"            = "Tyrkysová";
+"color.yellow"          = "Žlutá";
+"color.green"           = "Zelená";
+"color.orange"          = "Oranžová";
+
+/* Výběr vlastního zvuku */
+"sound.custom.fallback" = "vlastní soubor";
+"sound.panel.prompt"    = "Vybrat";
+"sound.panel.message"   = "Zvuk alarmu (aiff, wav, mp3, m4a…)";
+"sound.error.title"     = "Zvuk se nepodařilo načíst";
+"sound.error.body"      = "Soubor %@ nejde přečíst. Pokud leží v iCloud Drive, nechej ho nejdřív stáhnout.";

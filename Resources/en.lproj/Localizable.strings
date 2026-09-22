@@ -1,0 +1,34 @@
+/* Context menu */
+"menu.minutes"          = "%d min";
+"menu.start"            = "Start";
+"menu.pause"            = "Pause";
+"menu.size"             = "Size";
+"menu.size.small"       = "Small";
+"menu.size.medium"      = "Medium";
+"menu.size.large"       = "Large";
+"menu.size.huge"        = "Huge";
+"menu.color"            = "Color";
+"menu.transparency"     = "Transparency";
+"menu.sound"            = "Sound";
+"menu.sound.builtin"    = "Ring";
+"menu.sound.custom"     = "Custom file…";
+"menu.darkFace"         = "Dark face";
+"menu.snap"             = "Snap to minutes";
+"menu.hint"             = "drag the bezel to move · ⌃⌥⌘M to hide";
+"menu.language"         = "Language";
+"menu.language.system"  = "System default";
+"menu.quit"             = "Quit Kitchen Timer";
+
+/* Colours */
+"color.red"             = "Red";
+"color.teal"            = "Teal";
+"color.yellow"          = "Yellow";
+"color.green"           = "Green";
+"color.orange"          = "Orange";
+
+/* Custom sound picker */
+"sound.custom.fallback" = "custom file";
+"sound.panel.prompt"    = "Choose";
+"sound.panel.message"   = "Alarm sound (aiff, wav, mp3, m4a…)";
+"sound.error.title"     = "Could not load the sound";
+"sound.error.body"      = "The file %@ cannot be read. If it lives in iCloud Drive, download it first.";
