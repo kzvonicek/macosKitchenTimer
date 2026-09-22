@@ -8,6 +8,22 @@ across every Space and above full-screen apps. The panel is a
 `.nonactivatingPanel` — clicking the dial does not steal focus from whatever
 is underneath.
 
+## Download
+
+Grab `KitchenTimer.zip` from the
+[latest release](https://github.com/kzvonicek/macosKitchenTimer/releases/latest),
+unzip it and drag the app into Applications.
+
+The app is signed ad hoc, not with a paid Apple Developer ID, so macOS refuses
+to open it the first time. Either right-click it and choose **Open**, which
+offers to run it anyway, or clear the quarantine flag:
+
+```
+xattr -dr com.apple.quarantine /Applications/KitchenTimer.app
+```
+
+Nothing appears in the Dock — the dial itself is the whole interface.
+
 ## Features
 
 - **Analogue 60-minute dial.** Wind it up by dragging across the face, the way

@@ -1,0 +1,75 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release, e.g. v1.0.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Work out the version
+        id: version
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "number=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build app bundle
+        run: ./build.sh
+
+      - name: Stamp the version from the tag
+        run: |
+          PLIST=dist/KitchenTimer.app/Contents/Info.plist
+          /usr/libexec/PlistBuddy -c \
+            "Set :CFBundleShortVersionString ${{ steps.version.outputs.number }}" "$PLIST"
+          /usr/libexec/PlistBuddy -c \
+            "Set :CFBundleVersion ${{ github.run_number }}" "$PLIST"
+          # the signature covers Info.plist, so it has to be redone
+          codesign --force --sign - --timestamp=none dist/KitchenTimer.app
+          codesign --verify --strict dist/KitchenTimer.app
+
+      - name: Zip it
+        run: |
+          # ditto, not zip — it keeps the bundle structure and permissions
+          ditto -c -k --keepParent dist/KitchenTimer.app KitchenTimer.zip
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > notes.md <<'NOTES'
+          ## Installing
+
+          Unzip, drag **KitchenTimer.app** into Applications and open it.
+
+          The app is signed ad hoc, not with a paid Apple Developer ID, so
+          macOS will refuse to open it on the first try. Either right-click the
+          app and choose **Open**, which offers the option to run it anyway, or
+          clear the quarantine flag from a terminal:
+
+          ```
+          xattr -dr com.apple.quarantine /Applications/KitchenTimer.app
+          ```
+
+          There is no icon in the Dock — the dial is the whole interface.
+          Right-click it for the menu, ⌃⌥⌘M hides and shows it.
+
+          ## Building it yourself
+
+          `./build.sh` — Command Line Tools are enough, Xcode is not needed.
+          NOTES
+          gh release create "${{ steps.version.outputs.tag }}" KitchenTimer.zip \
+            --title "Kitchen Timer ${{ steps.version.outputs.number }}" \
+            --notes-file notes.md

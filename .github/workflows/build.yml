@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: swift --version
+
+      - name: Build app bundle
+        run: ./build.sh
+
+      - name: Check bundle contents
+        run: |
+          APP=dist/KitchenTimer.app
+          test -x "$APP/Contents/MacOS/KitchenTimer"   || { echo "missing executable"; exit 1; }
+          test -f "$APP/Contents/Resources/ring.wav"   || { echo "missing sound"; exit 1; }
+          test -d "$APP/Contents/Resources/en.lproj"   || { echo "missing English strings"; exit 1; }
+          test -d "$APP/Contents/Resources/cs.lproj"   || { echo "missing Czech strings"; exit 1; }
+          codesign --verify --strict "$APP" || { echo "signature does not verify"; exit 1; }
+          # every language in Resources has to be listed in the plist as well
+          /usr/libexec/PlistBuddy -c "Print :CFBundleLocalizations" "$APP/Contents/Info.plist"
+
+      - name: Check for untranslated keys
+        run: |
+          # each language must carry exactly the same keys, or the menu would
+          # show raw keys instead of text
+          keys() { grep -oE '^"[^"]+"' "$1" | sort; }
+          for lproj in Resources/*.lproj; do
+              [ "$lproj" = "Resources/en.lproj" ] && continue
+              if ! diff <(keys Resources/en.lproj/Localizable.strings) \
+                        <(keys "$lproj/Localizable.strings") > /dev/null; then
+                  echo "keys in $lproj do not match en.lproj:"
+                  diff <(keys Resources/en.lproj/Localizable.strings) \
+                       <(keys "$lproj/Localizable.strings") || true
+                  exit 1
+              fi
+          done
+          echo "all languages carry the same keys"
+
+      - name: Upload app
+        uses: actions/upload-artifact@v4
+        with:
+          name: KitchenTimer.app
+          path: dist/KitchenTimer.app
